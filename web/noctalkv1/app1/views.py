@@ -36,6 +36,7 @@ def main(request):
             exists = 'yes'
             noc = Noc.objects.filter(nochandle=str(request.session['nochandle']))[0]
             nochandle = noc.nochandle
+            return redirect('/casa/')
 
     return render(request, 'noctalk.html', {'exists':exists,'nochandle':nochandle})
 
@@ -53,10 +54,11 @@ def reg(request):
         # instagh = models.Charfield(max_length=30)
         # snapch = models.Charfield(max_length=30)
 
+        nochandle = request.POST['nochandle']
+
         if Noc.objects.filter(nochandle=str(nochandle)).exists():
             return HttpResponse(json.dumps("nochandle exists"), content_type="application/json")
 
-        nochandle = request.POST['nochandle']
         areacode = request.POST['areacode']
         tidbit = request.POST['tidbit']
         gender = request.POST['gender']
@@ -91,10 +93,25 @@ def reg(request):
 def casa(request):
 
     try:
-        # if 'nochandle' not in request.session:
-        #     return redirect('/')
+        if 'nochandle' not in request.session:
+            return redirect('/')
 
-        return render(request, 'talk.html', {})
+        return render(request, 'talk.html', {'nochandle':request.session['nochandle']})
+
+    except:
+        return HttpResponse(json.dumps(traceback.format_exc()), content_type="application/json")
+
+def user(request):
+    try:
+        if 'nochandle' not in request.session:
+            return redirect('/')
+
+        noch = request.POST['noc']
+        noc = Noc.objects.filter(nochandle=str(noch))[0]
+
+        nocj = {"nochandle":noc.nochandle, "areacode":noc.areacode, "tidbit":noc.tidbit, "gender":noc.gender, "age":noc.age, "prezi":noc.prezi, "twitterh":noc.twitterh, "fbh":noc.fbh, "instagh":noc.instagh, "snapch":noc.snapch}
+
+        return HttpResponse(json.dumps(nocj), content_type="application/json")
 
     except:
         return HttpResponse(json.dumps(traceback.format_exc()), content_type="application/json")

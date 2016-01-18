@@ -248,3 +248,14 @@ div.chatEntry {
     -moz-box-shadow: 0 0 5px black;
     box-shadow: 0 0 5px black;
 }
+
+div#pop-up {
+  display: none;
+  position: absolute;
+  width: 280px;
+  padding: 10px;
+  background: #eeeeee;
+  color: #000000;
+  border: 1px solid #1a1a1a;
+  font-size: 90%;
+}

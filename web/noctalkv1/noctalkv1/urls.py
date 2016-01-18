@@ -8,4 +8,5 @@ urlpatterns = patterns('',
     url(r'^$', 'app1.views.main'),
     url(r'^reg', 'app1.views.reg'),
     url(r'^casa', 'app1.views.casa'),
+    url(r'^user', 'app1.views.user'),
 )

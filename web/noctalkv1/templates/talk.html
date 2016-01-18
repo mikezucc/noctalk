@@ -48,12 +48,20 @@
         </div>
     </div>
     </div>
+    <!-- HIDDEN / POP-UP DIV -->
+    <div id="pop-up">
+      
+    </div>
   </body>
 
   <script>
     $(document).ready(function () {
+
+      var moveLeft = 20;
+      var moveDown = 10;
+
       var selectedchat = "everybody";
-      var username = "meme_cheese";
+      var username = "{{nochandle}}";
       $('.slackrow').mouseover(function () {
             $('.slackrow').removeClass('slackhover');
             $(this).addClass('slackhover');
@@ -83,11 +91,84 @@
         $('#m').keydown(function (event) {
               if (event.keyCode == 13) {
                   // $('.messageSender').trigger('click');
-                  var $chatElement = $('<a class="chatFullname">' + username + ':</a> <a class="chatPayload">' + $('#m').val() + '</a><br />');
+                  var $chatElement = $('<div noc="' + username + '"><a class="chatFullname">' + username + ':</a> <a class="chatPayload">' + $('#m').val() + '</a><br /></div>');
                   $('#' + selectedchat + 'chatwin').append($chatElement);
                   socket.emit('chat sent', { noc: username, target: selectedchat, fullname:username, message:$('#m').val() });
                   $('#m').val('');
                   $('#' + selectedchat + 'chatwin').scrollTop($('#' + selectedchat + 'chatwin')[0].scrollHeight);
+                  console.log("send message to: " + selectedchat);
+                  $chatElement.hover(function(e) {
+                    $('div#pop-up').show();
+                    console.log("memes");
+                    var payload = {"noc":$(this).attr('noc'), "csrfmiddlewaretoken": "{{ csrf_token }}" };
+                    console.log(payload);
+                    $.ajax({
+                          type: "POST",
+                          url: "/user/",
+                          data: payload
+                        }).done(function( msg ) {
+                          console.log(msg);
+                          $("#pop-up").empty();
+                          $("#pop-up").append($('<a>noc:</a><a>' + msg['nochandle'] + '</a><br>'));
+                          $("#pop-up").append($('<a>areacode:</a><a>' + msg['areacode'] + '</a><br>'));
+                          $("#pop-up").append($('<a>tidbit:</a><a>' + msg['tidbit'] + '</a><br>'));
+                          $("#pop-up").append($('<a>gender:</a><a>' + msg['gender'] + '</a><br>'));
+                          $("#pop-up").append($('<a>age:</a><a>' + msg['age'] + '</a><br>'));
+                          $("#pop-up").append($('<a>prezi:</a><a>' + msg['prezi'] + '</a><br>'));
+                          $("#pop-up").append($('<a>twitterh:</a><a>' + msg['twitterh'] + '</a><br>'));
+                          $("#pop-up").append($('<a>fbh:</a><a>' + msg['fbh'] + '</a><br>'));
+                          $("#pop-up").append($('<a>instagh:</a><a>' + msg['instagh'] + '</a><br>'));
+                          $("#pop-up").append($('<a>snapch:</a><a>' + msg['snapch'] + '</a><br>'));
+                        });
+
+                  }, function() {
+                    $('div#pop-up').hide();
+                  });
+
+                  $chatElement.mousemove(function(e) {
+                    $("div#pop-up").css('top', e.pageY + moveDown).css('left', e.pageX + moveLeft);
+                  });
+
+                  $chatElement.click(function(e) {
+                    console.log("clicked " + $("#" + $(this).attr('noc')));
+                    if ($("#" + $(this).attr('noc')).length)
+                    {
+                        $("#" + $(this).attr('noc')).trigger('click');
+                    }
+                    else
+                    {
+                        var $chatbar = $('<div class="slackrow" noch="' + $(this).attr('noc') + '" id="' + $(this).attr('noc') + 'chat"><div class="dojoTitle">' + $(this).attr('noc') + '</div></div>');
+                        $(".slackbar").append($chatbar);
+                        $('.slackrow').mouseover(function () {
+                            $('.slackrow').removeClass('slackhover');
+                            $(this).addClass('slackhover');
+                        }).mouseleave(function () {
+                            $('.slackrow').removeClass('slackhover');
+                        });
+                        $('.slackrow').click(function () {
+                             $('.slackrow').removeClass('selected');
+                             $(this).addClass('selected');
+                             $(this).removeClass('notification');
+
+                             var noch = $(this).attr('noch');
+                             selectedchat = noch;
+                             console.log('selected chat: ' + selectedchat);
+                             if ($('#' + noch + 'chatwin').length){
+                                  // exists
+                                  $(".chatwin").hide();
+                                  $("#" + noch + 'chatwin').show();
+                              }
+                              else
+                              {
+                                 $(".chatwin").hide();
+                                  var $chatwin = $('<div class="chatwin" noch="' + noch +'" id="' + noch + 'chatwin" style=""><h1>' + noch +'</h1></div>');
+                                  $('.tab-content').append($chatwin);
+                              }
+
+                          });
+                        $chatbar.trigger('click');
+                    }
+                  });
                   return false;
               }
           });
@@ -143,10 +224,13 @@
             }
         });
         socket.on('chat incoming', function (chatData) {
-            console.log("chat received from " + chatData['fullname']);
+            console.log("chat received from " + chatData['fullname'] + ' to: ' + chatData['target']);
             console.log(chatData);
-            var $chatElement = $('<a class="chatFullname">' + chatData['fullname'] + ':</a> <a class="chatPayload">' + chatData['message'] + '</a><br />');
-            $('#tab' + chatData['noc']).append($chatElement);
+            var $chatElement = $('<div noc="' + chatData['noc'] + '"><a class="chatFullname">' + chatData['fullname'] + ':</a> <a class="chatPayload">' + chatData['message'] + '</a><br /></div>');
+            if (chatData['noc']  !== username)
+            {
+                $('#' + chatData['noc'] + 'chatwin').append($chatElement);
+            }
             if (chatData['noc'] !== selectedchat) {
                 console.log("flagging notification for " + chatData['noc']);
                 $('#' + selectedchat + 'chat').addClass('notification');
@@ -156,6 +240,78 @@
             {
                 $('#' + selectedchat + 'chatwin').scrollTop($('#' + selectedchat + 'chatwin')[0].scrollHeight);
             }
+            $chatElement.hover(function(e) {
+              $('div#pop-up').show();
+              console.log("memes");
+              var payload = {"noc":$(this).attr('noc'), "csrfmiddlewaretoken": "{{ csrf_token }}" };
+              console.log(payload);
+              $.ajax({
+                    type: "POST",
+                    url: "/user/",
+                    data: payload
+                  }).done(function( msg ) {
+                    console.log(msg);
+                    $("#pop-up").empty();
+                    $("#pop-up").append($('<a>noc:</a><a>' + msg['nochandle'] + '</a><br>'));
+                    $("#pop-up").append($('<a>areacode:</a><a>' + msg['areacode'] + '</a><br>'));
+                    $("#pop-up").append($('<a>tidbit:</a><a>' + msg['tidbit'] + '</a><br>'));
+                    $("#pop-up").append($('<a>gender:</a><a>' + msg['gender'] + '</a><br>'));
+                    $("#pop-up").append($('<a>age:</a><a>' + msg['age'] + '</a><br>'));
+                    $("#pop-up").append($('<a>prezi:</a><a>' + msg['prezi'] + '</a><br>'));
+                    $("#pop-up").append($('<a>twitterh:</a><a>' + msg['twitterh'] + '</a><br>'));
+                    $("#pop-up").append($('<a>fbh:</a><a>' + msg['fbh'] + '</a><br>'));
+                    $("#pop-up").append($('<a>instagh:</a><a>' + msg['instagh'] + '</a><br>'));
+                    $("#pop-up").append($('<a>snapch:</a><a>' + msg['snapch'] + '</a><br>'));
+                  });
+
+            }, function() {
+              $('div#pop-up').hide();
+            });
+
+            $chatElement.mousemove(function(e) {
+              $("div#pop-up").css('top', e.pageY + moveDown).css('left', e.pageX + moveLeft);
+            });
+
+            $chatElement.click(function(e) {
+              console.log("clicked " + $("#" + $(this).attr('noc')));
+              if ($("#" + $(this).attr('noc')).length)
+              {
+                  $("#" + $(this).attr('noc')).trigger('click');
+              }
+              else
+              {
+                  var $chatbar = $('<div class="slackrow" noch="' + $(this).attr('noc') + '" id="' + $(this).attr('noc') + 'chat"><div class="dojoTitle">' + $(this).attr('noc') + '</div></div>');
+                  $(".slackbar").append($chatbar);
+                  $('.slackrow').mouseover(function () {
+                      $('.slackrow').removeClass('slackhover');
+                      $(this).addClass('slackhover');
+                  }).mouseleave(function () {
+                      $('.slackrow').removeClass('slackhover');
+                  });
+                  $('.slackrow').click(function () {
+                       $('.slackrow').removeClass('selected');
+                       $(this).addClass('selected');
+                       $(this).removeClass('notification');
+
+                       var noch = $(this).attr('noch');
+                       selectedchat = noch;
+                       console.log('selected chat: ' + selectedchat);
+                       if ($('#' + noch + 'chatwin').length){
+                            // exists
+                            $(".chatwin").hide();
+                            $("#" + noch + 'chatwin').show();
+                        }
+                        else
+                        {
+                           $(".chatwin").hide();
+                            var $chatwin = $('<div class="chatwin" noch="' + noch +'" id="' + noch + 'chatwin" style=""><h1>' + noch +'</h1></div>');
+                            $('.tab-content').append($chatwin);
+                        }
+
+                    });
+                  $chatbar.trigger('click');
+              }
+            });
         });
         var timerid;
         var waitingForClear = 0;
@@ -210,8 +366,81 @@
            {
               $('#' + data['noc'] + selectedchat + 'type').remove();
            }
-           var $chatElement = $('<div id="' + data['noc'] + selectedchat + 'type"><a id="' + data['noc'] + selectedchat + 'type" class="chatFullname">' + data['noc'] + ':</a> <a class="chatPayload">' + data['message'] + '</a><br /></div>');
+           var $chatElement = $('<div noc="' + data['noc'] + '" id="' + data['noc'] + selectedchat + 'type"><a id="' + data['noc'] + selectedchat + 'type" class="chatFullname">' + data['noc'] + ':</a> <a class="chatPayload">' + data['message'] + '</a><br /></div>');
            $('.typingListDiv').append($chatElement);
+           $chatElement.hover(function(e) {
+              $('div#pop-up').show();
+              console.log("memes");
+              var payload = {"noc":$(this).attr('noc'), "csrfmiddlewaretoken": "{{ csrf_token }}" };
+              console.log(payload);
+              $.ajax({
+                    type: "POST",
+                    url: "/user/",
+                    data: payload
+                  }).done(function( msg ) {
+                    console.log(msg);
+                    //"nochandle":noc.nochandle, "areacode":noc.areacode, "tidbit":noc.tidbit, "gender":noc.gender, "age":noc.age, "prezi":noc.prezi, "twitterh":noc.twitterh, "fbh":noc.fbh, "instagh":noc.instagh, "snapch":noc.snapch
+                    $("#pop-up").empty();
+                    $("#pop-up").append($('<a>noc:</a><a>' + msg['nochandle'] + '</a><br>'));
+                    $("#pop-up").append($('<a>areacode:</a><a>' + msg['areacode'] + '</a><br>'));
+                    $("#pop-up").append($('<a>tidbit:</a><a>' + msg['tidbit'] + '</a><br>'));
+                    $("#pop-up").append($('<a>gender:</a><a>' + msg['gender'] + '</a><br>'));
+                    $("#pop-up").append($('<a>age:</a><a>' + msg['age'] + '</a><br>'));
+                    $("#pop-up").append($('<a>prezi:</a><a>' + msg['prezi'] + '</a><br>'));
+                    $("#pop-up").append($('<a>twitterh:</a><a>' + msg['twitterh'] + '</a><br>'));
+                    $("#pop-up").append($('<a>fbh:</a><a>' + msg['fbh'] + '</a><br>'));
+                    $("#pop-up").append($('<a>instagh:</a><a>' + msg['instagh'] + '</a><br>'));
+                    $("#pop-up").append($('<a>snapch:</a><a>' + msg['snapch'] + '</a><br>'));
+                  });
+
+            }, function() {
+              $('div#pop-up').hide();
+            });
+
+            $chatElement.mousemove(function(e) {
+              $("div#pop-up").css('top', e.pageY + moveDown).css('left', e.pageX + moveLeft);
+            });
+
+            $chatElement.click(function(e) {
+              console.log("clicked " + $("#" + $(this).attr('noc')));
+              if ($("#" + $(this).attr('noc')).length)
+              {
+                  $("#" + $(this).attr('noc')).trigger('click');
+              }
+              else
+              {
+                  var $chatbar = $('<div class="slackrow" noch="' + $(this).attr('noc') + '" id="' + $(this).attr('noc') + 'chat"><div class="dojoTitle">' + $(this).attr('noc') + '</div></div>');
+                  $(".slackbar").append($chatbar);
+                  $('.slackrow').mouseover(function () {
+                      $('.slackrow').removeClass('slackhover');
+                      $(this).addClass('slackhover');
+                  }).mouseleave(function () {
+                      $('.slackrow').removeClass('slackhover');
+                  });
+                  $('.slackrow').click(function () {
+                       $('.slackrow').removeClass('selected');
+                       $(this).addClass('selected');
+                       $(this).removeClass('notification');
+
+                       var noch = $(this).attr('noch');
+                       selectedchat = noch;
+                       console.log('selected chat: ' + selectedchat);
+                       if ($('#' + noch + 'chatwin').length){
+                            // exists
+                            $(".chatwin").hide();
+                            $("#" + noch + 'chatwin').show();
+                        }
+                        else
+                        {
+                           $(".chatwin").hide();
+                            var $chatwin = $('<div class="chatwin" noch="' + noch +'" id="' + noch + 'chatwin" style=""><h1>' + noch +'</h1></div>');
+                            $('.tab-content').append($chatwin);
+                        }
+
+                    });
+                  $chatbar.trigger('click');
+              }
+            });
         });
     });
   </script>

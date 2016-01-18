@@ -18,26 +18,53 @@
       </div>
       <div class="input">
         <p>Wave 1: Anonymous name and area code</p>
-        <input type="text" class="button" id="email" name="nochandle" placeholder="meme_lorde">
-        <input type="text" class="button" id="email" name="areacode" placeholder="408">
+        <input type="text" class="button" id="nochandle" placeholder="meme_lorde" value="meme_lorde">
+        <input type="text" class="button" id="areacode" placeholder="408" value="408">
         <p>Wave 2: Doctor's Details</p>
-        <input type="text" class="button" id="email" name="tidbit" placeholder="I like to think in my room alone while listening to alternative rock because my stupid parents.">
-        <input type="text" class="button" id="email" name="gender" placeholder="Male">
-        <input type="text" class="button" id="email" name="age" placeholder="21">
+        <input type="text" class="button" id="tidbit" placeholder="I like to think in my room alone while listening to alternative rock because my stupid parents." value="I like to think in my room alone while listening to alternative rock because my stupid parents.">
+        <input type="text" class="button" id="gender" placeholder="Male" value="Male">
+        <input type="text" class="button" id="age" placeholder="21" value="21">
         <p>Wave 3: Random trivia</p>
-        <input type="text" class="button" id="email" name="prezi" placeholder="Trump">
+        <input type="text" class="button" id="prezi" placeholder="Trump" value="Trump">
         <P>Final Wave: Social handles</p>
-        <input type="text" class="button" id="email" name="twitter" placeholder="@mikezuccarino">
-        <input type="text" class="button" id="email" name="fb" placeholder="https://www.facebook.com/zuccarino">
-        <input type="text" class="button" id="email" name="instag" placeholder="@hempaw2">
-        <input type="text" class="button" id="email" name="snapc" placeholder="bootysnatcher22">
+        <input type="text" class="button" id="twitter" placeholder="@mikezuccarino" value="@mikezuccarino">
+        <input type="text" class="button" id="fb" placeholder="https://www.facebook.com/zuccarino" value="https://www.facebook.com/zuccarino">
+        <input type="text" class="button" id="instag" placeholder="@hempaw2" value="@hempaw2">
+        <input type="text" class="button" id="snapc" placeholder="bootysnatcher22" value="bootysnatcher22">
         
-        <input type="submit" class="button" id="submit" value="im ready">
+        <input type="submit" class="button" id="submit" value="yes im ready">
       </div>
     </div>
   </body>
 
   <script>
+  $(document).ready(function () {
 
+    $('#submit').click(function () {
+        var payload = {'nochandle':$('#nochandle').val(),
+                     'areacode':$('#areacode').val(),
+                     'tidbit':$('#tidbit').val(),
+                     'gender':$('#gender').val(),
+                     'age':$('#age').val(),
+                     'prezi':$('#prezi').val(),
+                     'twitterh':$('#twitter').val(),
+                     'fbh':$('#fb').val(),
+                     'instagh':$('#instag').val(),
+                     'snapch':$('#snapc').val(),
+                      "csrfmiddlewaretoken": "{{ csrf_token }}" }
+        console.log(payload);
+        $.ajax({
+              type: "POST",
+              url: "/reg/",
+              data: payload
+            }).done(function( msg ) {
+              console.log(msg);
+              if ("msg" == "success")
+              {
+                  window.location.href = "/casa/";
+              }
+            });
+    });
+  });
   </script>
 </html>
