@@ -1,0 +1,86 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>NocTalk</title>
+    <!--<link href="{{ STATIC_URL }}css/talk.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/talk.css">
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+    <script src="{{ STATIC_URL }}js/jquery-1.12.0.js" ></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  </head>
+  <body>
+    <div class="chatpar" >
+      <div class="slackbar">
+        <div id="note">
+
+        </div>
+        <div class="dropDown" id="dojoDropdown">NocTalk</div>
+        <div class="slackrow" noch="everybody" id="everybodychat">
+            <div class="dojoTitle" onclick="return loadDojo('{{ Dojo.dojohash }}','{{ Dojo.dojoName }}');">everybody</div>
+        </div>
+        <div class="dojoSlackList">
+            {% for Dojo in slackList %}
+            <div class="slackrow" id="slack{{ Dojo.dojohash }}">
+                <div class="dojoTitle" onclick="return loadDojo('{{ Dojo.dojohash }}','{{ Dojo.dojoName }}');">{{ Dojo.dojoName }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div id="messageFrame">
+        <div class="onlineList" style="display:block; border-bottom:1px solid #b6b6b6; border-top:1px solid #b6b6b6; padding-bottom:0px;">
+            
+        </div>
+        <div class="tab-content">
+          
+        </div>
+        <div class="typingListDiv">
+
+        </div>
+        <div class="inputArea">
+            <textarea id="m" cols="50" rows="3"></textarea><button class="messageSender">Send That Shit</button>
+        </div>
+    </div>
+    </div>
+  </body>
+
+  <script>
+    $(document).ready(function () {
+      $('.slackrow').mouseover(function () {
+            $('.slackrow').removeClass('slackhover');
+            $(this).addClass('slackhover');
+        }).mouseleave(function () {
+            $('.slackrow').removeClass('slackhover');
+        });
+        $('.slackrow').click(function () {
+             $('.slackrow').removeClass('selected');
+             $(this).addClass('selected');
+             $(this).removeClass('notification');
+
+
+             var noch = $(this).attr('noch');
+             if ($('#' + noch + 'chatwin').length){
+                  // exists
+                  $(".chatwin").hide();
+                  $("#" + noch + 'chatwin').show();
+              }
+              else
+              {
+                 $(".chatwin").hide();
+                  var $chatwin = $('<div class="chatwin" noch="' + noch +'" id="' + noch + 'chatwin" style=""><h1>' + noch +'</h1></div>');
+                  $('.tab-content').append($chatwin);
+              }
+
+          });
+        $('#m').keydown(function (event) {
+              if (event.keyCode == 13) {
+                  // $('.messageSender').trigger('click');
+                  var $chatElement = $('<a class="chatFullname">' + "meme_cheese" + ':</a> <a class="chatPayload">' + $('#m').val() + '</a><br />');
+                  $('#everybodychatwin').append($chatElement);
+                  $('#m').val('');
+                  $("#everybodychatwin").scrollTop($("#everybodychatwin")[0].scrollHeight);
+                  return false;
+              }
+          });
+    });
+  </script>
+</html>
