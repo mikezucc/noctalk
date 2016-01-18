@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/talk.css">
     <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
     <script src="{{ STATIC_URL }}js/jquery-1.12.0.js" ></script>
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.3.js"></script>
   </head>
   <body>
     <div class="chatpar" >
@@ -16,12 +16,19 @@
         </div>
         <div class="dropDown" id="dojoDropdown">NocTalk</div>
         <div class="slackrow" noch="everybody" id="everybodychat">
-            <div class="dojoTitle" onclick="return loadDojo('{{ Dojo.dojohash }}','{{ Dojo.dojoName }}');">everybody</div>
+            <!--<div class="dojoTitle" onclick="return loadDojo('{{ Dojo.dojohash }}','{{ Dojo.dojoName }}');">everybody</div>-->
+            <div class="dojoTitle">everybody</div>
+        </div>
+        <div class="slackrow" noch="john_simmons" id="john_simmonschat">
+            <div class="dojoTitle">john simmons</div>
+        </div>
+        <div class="slackrow" noch="fuk_boy_jim" id="fuk_boy_jimchat">
+            <div class="dojoTitle">boy jim</div>
         </div>
         <div class="dojoSlackList">
             {% for Dojo in slackList %}
             <div class="slackrow" id="slack{{ Dojo.dojohash }}">
-                <div class="dojoTitle" onclick="return loadDojo('{{ Dojo.dojohash }}','{{ Dojo.dojoName }}');">{{ Dojo.dojoName }}</div>
+                <div class="dojoTitle">{{ Dojo.dojoName }}</div>
             </div>
             {% endfor %}
         </div>
@@ -45,6 +52,8 @@
 
   <script>
     $(document).ready(function () {
+      var selectedchat = "everybody";
+      var username = "meme_cheese";
       $('.slackrow').mouseover(function () {
             $('.slackrow').removeClass('slackhover');
             $(this).addClass('slackhover');
@@ -56,8 +65,8 @@
              $(this).addClass('selected');
              $(this).removeClass('notification');
 
-
              var noch = $(this).attr('noch');
+             selectedchat = noch;
              if ($('#' + noch + 'chatwin').length){
                   // exists
                   $(".chatwin").hide();
@@ -74,13 +83,136 @@
         $('#m').keydown(function (event) {
               if (event.keyCode == 13) {
                   // $('.messageSender').trigger('click');
-                  var $chatElement = $('<a class="chatFullname">' + "meme_cheese" + ':</a> <a class="chatPayload">' + $('#m').val() + '</a><br />');
-                  $('#everybodychatwin').append($chatElement);
+                  var $chatElement = $('<a class="chatFullname">' + username + ':</a> <a class="chatPayload">' + $('#m').val() + '</a><br />');
+                  $('#' + selectedchat + 'chatwin').append($chatElement);
+                  socket.emit('chat sent', { noc: username, target: selectedchat, fullname:username, message:$('#m').val() });
                   $('#m').val('');
-                  $("#everybodychatwin").scrollTop($("#everybodychatwin")[0].scrollHeight);
+                  $('#' + selectedchat + 'chatwin').scrollTop($('#' + selectedchat + 'chatwin')[0].scrollHeight);
                   return false;
               }
           });
+
+
+        var socket = io('localhost:3000');
+        socket.on('initializeConnect', function (data) {
+            console.log(data['welcome'] + ', ' + data['numUsers']);
+            socket.emit('handshakeauth', { nochandle: username, fullname: username });
+        });
+        socket.on('user connected', function (data) {
+            console.log(data['fullname'] + ' is online!');
+            var $notiSquaw = $('<p>' + data['fullname'] + ' is online!' + '</p>').delay(1000).fadeOut();
+            // $('#note').append($notiSquaw);
+        });
+        socket.on('handshakecomplete', function (data) {
+            console.log('auth status is ' + data['success']);
+            // socket.emit('dojo sync', { dojo: url });
+        });
+        socket.on('noclist update', function (data) {
+            var usersList = data['listOfUsers'];
+            console.log(usersList);
+            var isEmpty = 1;
+            var numOfPeeps = 0;
+            $('.onlineList').empty();
+            for (var key in usersList) {
+                if (usersList.hasOwnProperty(key)) {
+                    isEmpty = 0;
+                    numOfPeeps++;
+                    console.log("dank tits: " + usersList[key]);
+                    var $chatElement = $('<a style="color:#57bdfe;">' + ((numOfPeeps > 1) ? ', ' : '') + usersList[key]['fullname'] + '</a>');
+                    $('.onlineList').append($chatElement);
+                }
+            }
+            if (!isEmpty)
+            {
+                if (numOfPeeps == 1)
+                {
+                    var $chatElement = $('<a> no one else is online. get some friends on! </a>');
+                    $('.onlineList').append($chatElement);
+                }
+                else
+                {
+                    var $chatElement = $('<a> is online (' + numOfPeeps + ')</a>');
+                    $('.onlineList').append($chatElement);
+                }
+                
+            }
+            else
+            {
+                var $chatElement = $('<a> no one else is online. get some friends on! </a>');
+                $('.onlineList').append($chatElement);
+            }
+        });
+        socket.on('chat incoming', function (chatData) {
+            console.log("chat received from " + chatData['fullname']);
+            console.log(chatData);
+            var $chatElement = $('<a class="chatFullname">' + chatData['fullname'] + ':</a> <a class="chatPayload">' + chatData['message'] + '</a><br />');
+            $('#tab' + chatData['noc']).append($chatElement);
+            if (chatData['noc'] !== selectedchat) {
+                console.log("flagging notification for " + chatData['noc']);
+                $('#' + selectedchat + 'chat').addClass('notification');
+                $('#' + selectedchat + 'chat').fadeIn(100).fadeOut(100).fadeIn();
+            }
+            else
+            {
+                $('#' + selectedchat + 'chatwin').scrollTop($('#' + selectedchat + 'chatwin')[0].scrollHeight);
+            }
+        });
+        var timerid;
+        var waitingForClear = 0;
+        $("#m").on("input", function (e) {
+            if (selectedchat == "") return;
+            var value = $(this).val();
+
+            if (value.length > 4)
+            {
+                socket.emit('noc typing event', { noc: username, chat: selectedchat, fullname: username, message:value.substring(value.length - 4, value.length) });
+            }
+            else if (value.length <= 4 && value.length > 0)
+            {
+                socket.emit('noc typing event', { noc: username, chat: selectedchat, fullname: username, message:value.substring(0, value.length) });
+            }
+
+            if ($(this).val() === "")
+            {
+                if (waitingForClear)
+                {
+                    waitingForClear = 0;
+                    // socket.emit('noc typing event', { noc: username, chat: selectedchat, fullname: username, message:value });
+                }
+            }
+            if ($(this).val().length > 0) {
+                if (!waitingForClear)
+                {
+                    waitingForClear = 1;
+                    // socket.emit('noc typing event', { noc: username, chat: selectedchat, fullname: username, message:value });
+                }
+            }
+            if ($(this).data("lastval") != value) {
+                $(this).data("lastval", value);
+                /*
+                clearTimeout(timerid);
+                timerid = setTimeout(function () {
+                    if ($("#m").val() === "")
+                    {
+                        socket.emit('user typing stop', { user: '{{username}}', dojo: selectedDojo, fullname: '{{fullname}}' });
+                    }
+                    else
+                    {
+                        socket.emit('user typing active', { user: '{{username}}', dojo: selectedDojo, fullname: '{{fullname}}' });
+                    }
+                }, 500);
+                */
+            };
+        }); 
+        socket.on('noc typing eventbrc', function (data) {
+          console.log( data['noc'] + ' >> ' + data['target'] + '  >>  ' + data['message'] );
+           if ($('#' + data['noc'] + selectedchat + 'type').length)
+           {
+              $('#' + data['noc'] + selectedchat + 'type').remove();
+           }
+           var $chatElement = $('<div id="' + data['noc'] + selectedchat + 'type"><a id="' + data['noc'] + selectedchat + 'type" class="chatFullname">' + data['noc'] + ':</a> <a class="chatPayload">' + data['message'] + '</a><br /></div>');
+           $('.typingListDiv').append($chatElement);
+        });
     });
   </script>
 </html>
