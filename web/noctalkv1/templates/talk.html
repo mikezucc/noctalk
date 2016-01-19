@@ -19,19 +19,6 @@
             <!--<div class="dojoTitle" onclick="return loadDojo('{{ Dojo.dojohash }}','{{ Dojo.dojoName }}');">everybody</div>-->
             <div class="dojoTitle">everybody</div>
         </div>
-        <div class="slackrow" noch="john_simmons" id="john_simmonschat">
-            <div class="dojoTitle">john simmons</div>
-        </div>
-        <div class="slackrow" noch="fuk_boy_jim" id="fuk_boy_jimchat">
-            <div class="dojoTitle">boy jim</div>
-        </div>
-        <div class="dojoSlackList">
-            {% for Dojo in slackList %}
-            <div class="slackrow" id="slack{{ Dojo.dojohash }}">
-                <div class="dojoTitle">{{ Dojo.dojoName }}</div>
-            </div>
-            {% endfor %}
-        </div>
     </div>
     <div id="messageFrame">
         <div class="onlineList" style="display:block; border-bottom:1px solid #b6b6b6; border-top:1px solid #b6b6b6; padding-bottom:0px;">
@@ -79,12 +66,19 @@
                   // exists
                   $(".chatwin").hide();
                   $("#" + noch + 'chatwin').show();
+
+                  $('.typinginnerthang').hide();
+                  $('#' + selectedchat + 'typediv').show();
               }
               else
               {
                  $(".chatwin").hide();
-                  var $chatwin = $('<div class="chatwin" noch="' + noch +'" id="' + noch + 'chatwin" style=""><h1>' + noch +'</h1></div>');
+                  var $chatwin = $('<div class="chatwin" noch="' + noch +'" id="' + noch + 'chatwin" style=""><h1 id="' + noch+ 'h1">' + noch +'</h1></div>');
                   $('.tab-content').append($chatwin);
+
+                  $(".typinginnerthang").hide();
+                  var $typingDiv = $('<div class="typinginnerthang" id="' + selectedchat + 'typediv" style=""></div>');
+                  $('.typingListDiv').append($typingDiv);
               }
 
           });
@@ -92,7 +86,10 @@
               if (event.keyCode == 13) {
                   // $('.messageSender').trigger('click');
                   var $chatElement = $('<div noc="' + username + '"><a class="chatFullname">' + username + ':</a> <a class="chatPayload">' + $('#m').val() + '</a><br /></div>');
-                  $('#' + selectedchat + 'chatwin').append($chatElement);
+                  if (selectedchat !== "everybody")
+                  {
+                    $('#' + selectedchat + 'chatwin').append($chatElement);
+                  }
                   socket.emit('chat sent', { noc: username, target: selectedchat, fullname:username, message:$('#m').val() });
                   $('#m').val('');
                   $('#' + selectedchat + 'chatwin').scrollTop($('#' + selectedchat + 'chatwin')[0].scrollHeight);
@@ -109,12 +106,16 @@
                         }).done(function( msg ) {
                           console.log(msg);
                           $("#pop-up").empty();
+                          $("#pop-up").append($('<h2>~basic~</h2>'));
                           $("#pop-up").append($('<a>noc:</a><a>' + msg['nochandle'] + '</a><br>'));
                           $("#pop-up").append($('<a>areacode:</a><a>' + msg['areacode'] + '</a><br>'));
+                          $("#pop-up").append($('<h2>~@11p~</h2>'));
                           $("#pop-up").append($('<a>tidbit:</a><a>' + msg['tidbit'] + '</a><br>'));
                           $("#pop-up").append($('<a>gender:</a><a>' + msg['gender'] + '</a><br>'));
                           $("#pop-up").append($('<a>age:</a><a>' + msg['age'] + '</a><br>'));
+                          $("#pop-up").append($('<h2>~@midnite~</h2>'));
                           $("#pop-up").append($('<a>prezi:</a><a>' + msg['prezi'] + '</a><br>'));
+                          $("#pop-up").append($('<h2>~@1a~</h2>'));
                           $("#pop-up").append($('<a>twitterh:</a><a>' + msg['twitterh'] + '</a><br>'));
                           $("#pop-up").append($('<a>fbh:</a><a>' + msg['fbh'] + '</a><br>'));
                           $("#pop-up").append($('<a>instagh:</a><a>' + msg['instagh'] + '</a><br>'));
@@ -131,9 +132,11 @@
 
                   $chatElement.click(function(e) {
                     console.log("clicked " + $("#" + $(this).attr('noc')));
-                    if ($("#" + $(this).attr('noc')).length)
+
+                    if ($(this).attr('noc') == username) return;
+                    if ($("#" + $(this).attr('noc') + 'chat').length)
                     {
-                        $("#" + $(this).attr('noc')).trigger('click');
+                        $("#" + $(this).attr('noc') + 'chat').trigger('click');
                     }
                     else
                     {
@@ -145,7 +148,7 @@
                         }).mouseleave(function () {
                             $('.slackrow').removeClass('slackhover');
                         });
-                        $('.slackrow').click(function () {
+                        $chatbar.click(function () {
                              $('.slackrow').removeClass('selected');
                              $(this).addClass('selected');
                              $(this).removeClass('notification');
@@ -157,12 +160,19 @@
                                   // exists
                                   $(".chatwin").hide();
                                   $("#" + noch + 'chatwin').show();
+
+                                  $('.typinginnerthang').hide();
+                                  $('#' + selectedchat + 'typediv').show();
                               }
                               else
                               {
                                  $(".chatwin").hide();
-                                  var $chatwin = $('<div class="chatwin" noch="' + noch +'" id="' + noch + 'chatwin" style=""><h1>' + noch +'</h1></div>');
+                                  var $chatwin = $('<div class="chatwin" noch="' + noch +'" id="' + noch + 'chatwin" style=""><h1 id="' + noch+ 'h1">' + noch +'</h1></div>');
                                   $('.tab-content').append($chatwin);
+
+                                  $('.typinginnerthang').hide();
+                                  var $typingDiv = $('<div class="typinginnerthang" id="' + selectedchat + 'typediv" style=""></div>');
+                                  $('.typingListDiv').append($typingDiv);
                               }
 
                           });
@@ -187,6 +197,7 @@
         socket.on('handshakecomplete', function (data) {
             console.log('auth status is ' + data['success']);
             // socket.emit('dojo sync', { dojo: url });
+            $('#everybodychat').trigger('click');
         });
         socket.on('noclist update', function (data) {
             var usersList = data['listOfUsers'];
@@ -199,7 +210,91 @@
                     isEmpty = 0;
                     numOfPeeps++;
                     console.log("dank tits: " + usersList[key]);
-                    var $chatElement = $('<a style="color:#57bdfe;">' + ((numOfPeeps > 1) ? ', ' : '') + usersList[key]['fullname'] + '</a>');
+                    var $chatElement = $('<a class="particulars" noc="' + key + '" style="color:#57bdfe;">' + ((numOfPeeps > 1) ? ', ' : '') + usersList[key]['fullname'] + '</a>');
+                    $chatElement.hover(function(e) {
+                      $('div#pop-up').show();
+                      console.log("memes");
+                      var payload = {"noc":$(this).attr('noc'), "csrfmiddlewaretoken": "{{ csrf_token }}" };
+                      console.log(payload);
+                      $.ajax({
+                            type: "POST",
+                            url: "/user/",
+                            data: payload
+                          }).done(function( msg ) {
+                            console.log(msg);
+                            $("#pop-up").empty();
+                            $("#pop-up").append($('<h2>~basic~</h2>'));
+                            $("#pop-up").append($('<a>noc:</a><a>' + msg['nochandle'] + '</a><br>'));
+                            $("#pop-up").append($('<a>areacode:</a><a>' + msg['areacode'] + '</a><br>'));
+                            $("#pop-up").append($('<h2>~@11p~</h2>'));
+                            $("#pop-up").append($('<a>tidbit:</a><a>' + msg['tidbit'] + '</a><br>'));
+                            $("#pop-up").append($('<a>gender:</a><a>' + msg['gender'] + '</a><br>'));
+                            $("#pop-up").append($('<a>age:</a><a>' + msg['age'] + '</a><br>'));
+                            $("#pop-up").append($('<h2>~@midnite~</h2>'));
+                            $("#pop-up").append($('<a>prezi:</a><a>' + msg['prezi'] + '</a><br>'));
+                            $("#pop-up").append($('<h2>~@1a~</h2>'));
+                            $("#pop-up").append($('<a>twitterh:</a><a>' + msg['twitterh'] + '</a><br>'));
+                            $("#pop-up").append($('<a>fbh:</a><a>' + msg['fbh'] + '</a><br>'));
+                            $("#pop-up").append($('<a>instagh:</a><a>' + msg['instagh'] + '</a><br>'));
+                            $("#pop-up").append($('<a>snapch:</a><a>' + msg['snapch'] + '</a><br>'));
+                          });
+
+                    }, function() {
+                      $('div#pop-up').hide();
+                    });
+
+                    $chatElement.mousemove(function(e) {
+                      $("div#pop-up").css('top', e.pageY + moveDown).css('left', e.pageX + moveLeft);
+                    });
+
+                    $chatElement.click(function(e) {
+                      console.log("clicked " + $("#" + $(this).attr('noc')));
+                      if ($(this).attr('noc') == username) return;
+                      if ($("#" + $(this).attr('noc') + 'chat').length)
+                      {
+                          $("#" + $(this).attr('noc') + 'chat').trigger('click');
+                      }
+                      else
+                      {
+                          var $chatbar = $('<div class="slackrow" noch="' + $(this).attr('noc') + '" id="' + $(this).attr('noc') + 'chat"><div class="dojoTitle">' + $(this).attr('noc') + '</div></div>');
+                          $(".slackbar").append($chatbar);
+                          $('.slackrow').mouseover(function () {
+                              $('.slackrow').removeClass('slackhover');
+                              $(this).addClass('slackhover');
+                          }).mouseleave(function () {
+                              $('.slackrow').removeClass('slackhover');
+                          });
+                          $chatbar.click(function () {
+                               $('.slackrow').removeClass('selected');
+                               $(this).addClass('selected');
+                               $(this).removeClass('notification');
+
+                               var noch = $(this).attr('noch');
+                               selectedchat = noch;
+                               console.log('selected chat: ' + selectedchat);
+                               if ($('#' + noch + 'chatwin').length){
+                                    // exists
+                                    $(".chatwin").hide();
+                                    $("#" + noch + 'chatwin').show();
+
+                                    $('.typinginnerthang').hide();
+                                    $('#' + selectedchat + 'typediv').show();
+                                }
+                                else
+                                {
+                                   $(".chatwin").hide();
+                                    var $chatwin = $('<div class="chatwin" noch="' + noch +'" id="' + noch + 'chatwin" style=""><h1 id="' + noch+ 'h1">' + noch +'</h1></div>');
+                                    $('.tab-content').append($chatwin);
+
+                                    $('.typinginnerthang').hide();
+                                    var $typingDiv = $('<div class="typinginnerthang" id="' + selectedchat + 'typediv" style=""></div>');
+                                    $('.typingListDiv').append($typingDiv);
+                                }
+
+                            });
+                          $chatbar.trigger('click');
+                      }
+                    });
                     $('.onlineList').append($chatElement);
                 }
             }
@@ -227,19 +322,84 @@
             console.log("chat received from " + chatData['fullname'] + ' to: ' + chatData['target']);
             console.log(chatData);
             var $chatElement = $('<div noc="' + chatData['noc'] + '"><a class="chatFullname">' + chatData['fullname'] + ':</a> <a class="chatPayload">' + chatData['message'] + '</a><br /></div>');
-            if (chatData['noc']  !== username)
-            {
-                $('#' + chatData['noc'] + 'chatwin').append($chatElement);
-            }
-            if (chatData['noc'] !== selectedchat) {
-                console.log("flagging notification for " + chatData['noc']);
-                $('#' + selectedchat + 'chat').addClass('notification');
-                $('#' + selectedchat + 'chat').fadeIn(100).fadeOut(100).fadeIn();
+            // if (chatData['noc']  !== username)
+            // {
+            //     $('#' + chatData['target'] + 'chatwin').append($chatElement);
+            // }
+            // target == select only when its everybody
+            console.log("flagging notification for " + chatData['noc']);
+            if (chatData['target'] === "everybody") {
+              $('#everybodychatwin').append($chatElement);
+              $('#everybodychat').addClass('notification');
+              $('#everybodychat').fadeIn(100).fadeOut(100).fadeIn();
             }
             else
             {
-                $('#' + selectedchat + 'chatwin').scrollTop($('#' + selectedchat + 'chatwin')[0].scrollHeight);
-            }
+              if ($('#' + chatData['noc'] + 'chatwin').length) {
+                // alert("message from " + chatData['noc']);
+              }
+              else
+              {
+                var $chatbar = $('<div class="slackrow" noch="' + chatData['noc'] + '" id="' + chatData['noc'] + 'chat"><div class="dojoTitle">' + chatData['noc'] + '</div></div>');
+                $(".slackbar").append($chatbar);
+                $chatbar.mouseover(function () {
+                    $('.slackrow').removeClass('slackhover');
+                    $(this).addClass('slackhover');
+                }).mouseleave(function () {
+                    $('.slackrow').removeClass('slackhover');
+                });
+                $chatbar.click(function () {
+                     $('.slackrow').removeClass('selected');
+                     $(this).addClass('selected');
+                     $(this).removeClass('notification');
+
+                     var noch = $(this).attr('noch');
+                     selectedchat = noch;
+                     console.log('selected chat: ' + selectedchat);
+                     if ($('#' + noch + 'chatwin').length){
+                          // exists
+                          $(".chatwin").hide();
+                          $("#" + noch + 'chatwin').show();
+
+                          $('.typinginnerthang').hide();
+                          $('#' + selectedchat + 'typediv').show();
+                      }
+                      else
+                      {
+                         $(".chatwin").hide();
+                          var $chatwin = $('<div class="chatwin" noch="' + noch +'" id="' + noch + 'chatwin" style=""><h1 id="' + noch+ 'h1">' + noch +'</h1></div>');
+                          $('.tab-content').append($chatwin);
+
+                          $('.typinginnerthang').hide();
+                          var $typingDiv = $('<div class="typinginnerthang" id="' + selectedchat + 'typediv" style=""></div>');
+                          $('.typingListDiv').append($typingDiv);
+                      }
+                  });
+                  // var $chatwin = $('<div class="chatwin" noch="' + chatData['noc'] +'" id="' + chatData['noc'] + 'chatwin" style="display:none;"><h1 id="' + chatData['noc'] + 'h1">' + chatData['noc'] +'</h1></div>');
+                  // $('.tab-content').append($chatwin);
+
+                  // var $typingDiv = $('<div class"typinginnerdiv" id="' + selectedchat + 'typediv" style="display:none;"></div>');
+                  // $('.typingListDiv').append($typingDiv);
+                  $chatbar.trigger('click');
+              }
+              if (chatData['noc'] !== selectedchat)
+              {
+                $('#' + chatData['noc'] + 'chat').addClass('notification');
+                $('#' + chatData['noc'] + 'chat').fadeIn(100).fadeOut(100).fadeIn();
+              }
+              if (chatData['target'] !== "everybody")
+              {
+                $('#' + chatData['noc'] + 'chatwin').append($chatElement);
+              }
+              // if ($('#' + chatData['noc'] + 'chatwin').length) 
+              // {
+              //   console.log("chat window exists for " + chatData['noc']);
+              // }
+              // else
+              // {
+              //   console.log("chat NOT window exists for " + chatData['noc']);
+              // }
+            } 
             $chatElement.hover(function(e) {
               $('div#pop-up').show();
               console.log("memes");
@@ -252,12 +412,16 @@
                   }).done(function( msg ) {
                     console.log(msg);
                     $("#pop-up").empty();
+                    $("#pop-up").append($('<h2>~basic~</h2>'));
                     $("#pop-up").append($('<a>noc:</a><a>' + msg['nochandle'] + '</a><br>'));
                     $("#pop-up").append($('<a>areacode:</a><a>' + msg['areacode'] + '</a><br>'));
+                    $("#pop-up").append($('<h2>~@11p~</h2>'));
                     $("#pop-up").append($('<a>tidbit:</a><a>' + msg['tidbit'] + '</a><br>'));
                     $("#pop-up").append($('<a>gender:</a><a>' + msg['gender'] + '</a><br>'));
                     $("#pop-up").append($('<a>age:</a><a>' + msg['age'] + '</a><br>'));
+                    $("#pop-up").append($('<h2>~@midnite~</h2>'));
                     $("#pop-up").append($('<a>prezi:</a><a>' + msg['prezi'] + '</a><br>'));
+                    $("#pop-up").append($('<h2>~@1a~</h2>'));
                     $("#pop-up").append($('<a>twitterh:</a><a>' + msg['twitterh'] + '</a><br>'));
                     $("#pop-up").append($('<a>fbh:</a><a>' + msg['fbh'] + '</a><br>'));
                     $("#pop-up").append($('<a>instagh:</a><a>' + msg['instagh'] + '</a><br>'));
@@ -274,9 +438,10 @@
 
             $chatElement.click(function(e) {
               console.log("clicked " + $("#" + $(this).attr('noc')));
-              if ($("#" + $(this).attr('noc')).length)
+              if ($(this).attr('noc') == username) return;
+              if ($("#" + $(this).attr('noc') + 'chat').length)
               {
-                  $("#" + $(this).attr('noc')).trigger('click');
+                  $("#" + $(this).attr('noc') + 'chat').trigger('click');
               }
               else
               {
@@ -288,7 +453,7 @@
                   }).mouseleave(function () {
                       $('.slackrow').removeClass('slackhover');
                   });
-                  $('.slackrow').click(function () {
+                  $chatbar.click(function () {
                        $('.slackrow').removeClass('selected');
                        $(this).addClass('selected');
                        $(this).removeClass('notification');
@@ -300,12 +465,19 @@
                             // exists
                             $(".chatwin").hide();
                             $("#" + noch + 'chatwin').show();
+
+                            $('.typinginnerthang').hide();
+                            $('#' + selectedchat + 'typediv').show();
                         }
                         else
                         {
                            $(".chatwin").hide();
-                            var $chatwin = $('<div class="chatwin" noch="' + noch +'" id="' + noch + 'chatwin" style=""><h1>' + noch +'</h1></div>');
+                            var $chatwin = $('<div class="chatwin" noch="' + noch +'" id="' + noch + 'chatwin" style=""><h1 id="' + noch+ 'h1">' + noch +'</h1></div>');
                             $('.tab-content').append($chatwin);
+
+                            $('.typinginnerthang').hide();
+                            var $typingDiv = $('<div class="typinginnerthang" id="' + selectedchat + 'typediv" style=""></div>');
+                            $('.typingListDiv').append($typingDiv);
                         }
 
                     });
@@ -319,13 +491,17 @@
             if (selectedchat == "") return;
             var value = $(this).val();
 
-            if (value.length > 4)
+            if (value.length > 7)
             {
-                socket.emit('noc typing event', { noc: username, chat: selectedchat, fullname: username, message:value.substring(value.length - 4, value.length) });
+                socket.emit('noc typing event', { noc: username, chat: selectedchat, fullname: username, message:value.substring(value.length - 7, value.length) });
             }
-            else if (value.length <= 4 && value.length > 0)
+            else if (value.length <= 7 && value.length > 0)
             {
                 socket.emit('noc typing event', { noc: username, chat: selectedchat, fullname: username, message:value.substring(0, value.length) });
+            }
+            else
+            {
+                socket.emit('noc typing event', { noc: username, chat: selectedchat, fullname: username, message:"" });
             }
 
             if ($(this).val() === "")
@@ -361,13 +537,29 @@
             };
         }); 
         socket.on('noc typing eventbrc', function (data) {
-          console.log( data['noc'] + ' >> ' + data['target'] + '  >>  ' + data['message'] );
-           if ($('#' + data['noc'] + selectedchat + 'type').length)
+          console.log( data['noc'] + ' >> ' + data['chat'] + '  >>  ' + data['message'] );
+           var $chatElement = $('<div noc="' + data['noc'] + '" id="' + data['noc'] + 'type"><a id="' + data['noc'] + selectedchat + 'type" class="chatFullname">' + data['noc'] + ':</a> <a class="chatPayload">' + data['message'] + '</a><br /></div>');
+           if (data['chat'] === "everybody")
            {
-              $('#' + data['noc'] + selectedchat + 'type').remove();
+              if ($('#everybodytypediv').find( '#' + data['noc'] + 'type' ).length)
+              {
+                $('#everybodytypediv').find( '#' + data['noc'] + 'type' ).remove();
+              }
+              $('#everybodytypediv').append($chatElement);
            }
-           var $chatElement = $('<div noc="' + data['noc'] + '" id="' + data['noc'] + selectedchat + 'type"><a id="' + data['noc'] + selectedchat + 'type" class="chatFullname">' + data['noc'] + ':</a> <a class="chatPayload">' + data['message'] + '</a><br /></div>');
-           $('.typingListDiv').append($chatElement);
+           else
+           {
+              if ($('#' + data['noc'] +'typediv').find( '#' + data['noc'] + 'type' ).length)
+              {
+                console.log("found type div: " + '#' + data['noc'] + 'type');
+                $('#' + data['noc'] +'typediv').find( '#' + data['noc'] + 'type' ).remove();
+              }
+              else
+              {
+                console.log("could not find type div: " + '#' + data['noc'] + 'type');
+              }
+              $('#' + data['noc'] +'typediv').append($chatElement);
+           }
            $chatElement.hover(function(e) {
               $('div#pop-up').show();
               console.log("memes");
@@ -381,12 +573,16 @@
                     console.log(msg);
                     //"nochandle":noc.nochandle, "areacode":noc.areacode, "tidbit":noc.tidbit, "gender":noc.gender, "age":noc.age, "prezi":noc.prezi, "twitterh":noc.twitterh, "fbh":noc.fbh, "instagh":noc.instagh, "snapch":noc.snapch
                     $("#pop-up").empty();
+                    $("#pop-up").append($('<h2>~basic~</h2>'));
                     $("#pop-up").append($('<a>noc:</a><a>' + msg['nochandle'] + '</a><br>'));
                     $("#pop-up").append($('<a>areacode:</a><a>' + msg['areacode'] + '</a><br>'));
+                    $("#pop-up").append($('<h2>~@11p~</h2>'));
                     $("#pop-up").append($('<a>tidbit:</a><a>' + msg['tidbit'] + '</a><br>'));
                     $("#pop-up").append($('<a>gender:</a><a>' + msg['gender'] + '</a><br>'));
                     $("#pop-up").append($('<a>age:</a><a>' + msg['age'] + '</a><br>'));
+                    $("#pop-up").append($('<h2>~@midnite~</h2>'));
                     $("#pop-up").append($('<a>prezi:</a><a>' + msg['prezi'] + '</a><br>'));
+                    $("#pop-up").append($('<h2>~@1a~</h2>'));
                     $("#pop-up").append($('<a>twitterh:</a><a>' + msg['twitterh'] + '</a><br>'));
                     $("#pop-up").append($('<a>fbh:</a><a>' + msg['fbh'] + '</a><br>'));
                     $("#pop-up").append($('<a>instagh:</a><a>' + msg['instagh'] + '</a><br>'));
@@ -403,9 +599,10 @@
 
             $chatElement.click(function(e) {
               console.log("clicked " + $("#" + $(this).attr('noc')));
-              if ($("#" + $(this).attr('noc')).length)
+              if ($(this).attr('noc') == username) return;
+              if ($("#" + $(this).attr('noc') + 'chat').length)
               {
-                  $("#" + $(this).attr('noc')).trigger('click');
+                  $("#" + $(this).attr('noc') + 'chat').trigger('click');
               }
               else
               {
@@ -417,7 +614,7 @@
                   }).mouseleave(function () {
                       $('.slackrow').removeClass('slackhover');
                   });
-                  $('.slackrow').click(function () {
+                  $chatbar.click(function () {
                        $('.slackrow').removeClass('selected');
                        $(this).addClass('selected');
                        $(this).removeClass('notification');
@@ -429,12 +626,19 @@
                             // exists
                             $(".chatwin").hide();
                             $("#" + noch + 'chatwin').show();
+
+                            $('.typinginnerthang').hide();
+                            $('#' + selectedchat + 'typediv').show();
                         }
                         else
                         {
                            $(".chatwin").hide();
-                            var $chatwin = $('<div class="chatwin" noch="' + noch +'" id="' + noch + 'chatwin" style=""><h1>' + noch +'</h1></div>');
+                            var $chatwin = $('<div class="chatwin" noch="' + noch +'" id="' + noch + 'chatwin" style=""><h1 id="' + noch+ 'h1">' + noch +'</h1></div>');
                             $('.tab-content').append($chatwin);
+
+                            $(".typinginnerthang").hide();
+                            var $typingDiv = $('<div class="typinginnerthang" id="' + selectedchat + 'typediv" style=""></div>');
+                            $('.typingListDiv').append($typingDiv);
                         }
 
                     });

@@ -21,7 +21,8 @@ io.on('connection', function(socket){
         currentUser = credentialData['nochandle'];
         currentFullname = credentialData['fullname'];
         usersList[credentialData['nochandle']] = {fullname: credentialData['fullname']};
-        userSocketList[credentialData['nochandle']] = socket;
+        // userSocketList[credentialData['nochandle']] = socket.id;
+        socket.join(credentialData['nochandle']);
         io.sockets.emit('noclist update', { listOfUsers: usersList });
         io.sockets.emit('noc connected', { nochandle: credentialData['nochandle'], fullname: credentialData['fullname'] });
         socket.emit('noti history', { notiHistory: notificationHistory });
@@ -41,7 +42,7 @@ io.on('connection', function(socket){
       }
       notificationHistory.push(disconnectedString);
       delete usersList[currentUser];
-      delete userSocketList[currentUser];
+      // delete userSocketList[currentUser];
       io.sockets.emit('noclist update', { listOfUsers: usersList });
       console.log('noc disconnected');
     });
@@ -50,12 +51,13 @@ io.on('connection', function(socket){
         console.log(payloadDict['noc'] + ' sent chat to ' + targetData + " >> " + payloadDict['message']);
         if (targetData == "everybody")
         {
+          console.log("sending everyone");
           io.sockets.emit('chat incoming', payloadDict);
         }
         else
         {
-          var sk = userSocketList[targetData];
-          sk.emit('chat incoming', payloadDict);
+          // var sk = userSocketList[targetData];
+          io.sockets.in(payloadDict['target']).emit('chat incoming', payloadDict);
         }
     });
     socket.on('noc typing active', function(payloadDict){
@@ -67,8 +69,8 @@ io.on('connection', function(socket){
         }
         else
         {
-          var sk = userSocketList[targetData];
-          sk.emit('noc typing update start', payloadDict);
+          // var sk = userSocketList[targetData];
+          io.sockets.in(payloadDict['target']).emit('noc typing update start', payloadDict);
         }
     });
     socket.on('noc typing event', function(payloadDict){
@@ -80,8 +82,8 @@ io.on('connection', function(socket){
         }
         else
         {
-          var sk = userSocketList[targetData];
-          sk.emit('noc typing eventbrc', payloadDict);
+          // var sk = userSocketList[targetData];
+          io.sockets.in(targetData).emit('noc typing eventbrc', payloadDict);
         }
     });
 });

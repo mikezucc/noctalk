@@ -205,10 +205,15 @@ li.active a, li.active a:hover {
     bottom: 0;
 }
 
+a.particulars {
+  cursor:pointer;
+}
+
 a.chatFullname {
     font-size: 12px;
     color: #7396cc;
     text-shadow: 1px 1px 2px #b6b6b6;
+    cursor:pointer;
 }
 
 a.chatPayload {

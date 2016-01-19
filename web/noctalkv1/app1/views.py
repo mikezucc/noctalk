@@ -63,6 +63,7 @@ def reg(request):
         tidbit = request.POST['tidbit']
         gender = request.POST['gender']
         age = request.POST['age']
+        college = request.POST['college']
         prezi = request.POST['prezi']
         twitterh = request.POST['twitterh']
         fbh = request.POST['fbh']
@@ -73,7 +74,7 @@ def reg(request):
         if ip_addr is None:
             ip_addr = "0.0.0.0"
 
-        new_noc = Noc.objects.create(nochandle=nochandle, areacode=areacode, tidbit=tidbit, gender=gender, age=age, prezi=prezi, twitterh=twitterh, fbh=fbh, instagh=instagh, snapch=snapch, ip_addr=ip_addr)
+        new_noc = Noc.objects.create(nochandle=nochandle, areacode=areacode, tidbit=tidbit, gender=gender, age=age, college=college, prezi=prezi, twitterh=twitterh, fbh=fbh, instagh=instagh, snapch=snapch, ip_addr=ip_addr)
         new_noc.save()
 
         # name = models.CharField(max_length=30)
@@ -81,7 +82,7 @@ def reg(request):
         # ip_addr = models.CharField(max_length=30)
         # noc_id = models.ForeignKey('Noc',blank=True, null=True)
 
-        noc_event = Event.objects.create(name="create",nochandle="nochandle", ip_addr=ip_addr, noc_id=new_noc)
+        noc_event = Event.objects.create(name="create",nochandle=nochandle, ip_addr=ip_addr, noc_id=new_noc)
         noc_event.save()
 
         request.session['nochandle'] = nochandle
@@ -96,6 +97,15 @@ def casa(request):
         if 'nochandle' not in request.session:
             return redirect('/')
 
+        ip_addr = get_ip(request)
+        if ip_addr is None:
+            ip_addr = "0.0.0.0"
+
+        noc = Noc.objects.filter(nochandle=str(request.session['nochandle']))[0]
+
+        noc_event = Event.objects.create(name="online",nochandle=request.session['nochandle'], ip_addr=ip_addr, noc_id=noc)
+        noc_event.save()
+
         return render(request, 'talk.html', {'nochandle':request.session['nochandle']})
 
     except:
@@ -106,10 +116,36 @@ def user(request):
         if 'nochandle' not in request.session:
             return redirect('/')
 
+        ip_addr = get_ip(request)
+        if ip_addr is None:
+            ip_addr = "0.0.0.0"
+
+        nocreqqer = Noc.objects.filter(nochandle=str(request.session['nochandle']))[0]
+
+        noc_event = Event.objects.create(name="inquire",nochandle=request.session['nochandle'], ip_addr=ip_addr, noc_id=nocreqqer)
+        noc_event.save()
+
         noch = request.POST['noc']
         noc = Noc.objects.filter(nochandle=str(noch))[0]
 
-        nocj = {"nochandle":noc.nochandle, "areacode":noc.areacode, "tidbit":noc.tidbit, "gender":noc.gender, "age":noc.age, "prezi":noc.prezi, "twitterh":noc.twitterh, "fbh":noc.fbh, "instagh":noc.instagh, "snapch":noc.snapch}
+        nocj = {"nochandle":noc.nochandle}
+        nocj["areacode"] = noc.areacode
+
+        now = datetime.datetime.now()
+        print >> sys.stderr, now.hour
+        if now.hour == 22:
+            nocj["tidbit"]=noc.tidbit
+            nocj["gender"]=noc.gender
+            nocj["age"]=noc.age
+        if now.hour >= 22 and now.hour < 24:
+            nocj["prezi"]=noc.prezi
+        if now.hour < 1:
+            nocj["twitterh"]=noc.twitterh
+            nocj["fbh"]=noc.fbh
+            nocj["instagh"]=noc.instagh
+            nocj["snapch"]=noc.snapch
+        if now.hour < 2:
+            nocj['empty'] = ''
 
         return HttpResponse(json.dumps(nocj), content_type="application/json")
 

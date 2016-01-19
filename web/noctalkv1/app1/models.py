@@ -26,6 +26,7 @@ class Noc(models.Model):
     areacode = models.CharField(max_length=3)
     tidbit = models.CharField(max_length=140)
     gender = models.CharField(max_length=5)
+    college = models.CharField(max_length=100)
     age = models.IntegerField(default=18)
     prezi = models.CharField(max_length=20)
     twitterh = models.CharField(max_length=30)
