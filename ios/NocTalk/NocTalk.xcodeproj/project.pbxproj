@@ -13,6 +13,10 @@
 		EAF07D3E1C4F3D110065F36B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAF07D3C1C4F3D110065F36B /* Main.storyboard */; };
 		EAF07D401C4F3D110065F36B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAF07D3F1C4F3D110065F36B /* Assets.xcassets */; };
 		EAF07D431C4F3D110065F36B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAF07D411C4F3D110065F36B /* LaunchScreen.storyboard */; };
+		EAF07D4B1C4F44790065F36B /* RegisterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAF07D4A1C4F44790065F36B /* RegisterCell.xib */; };
+		EAF07D4E1C4F45340065F36B /* RegisterFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAF07D4D1C4F45340065F36B /* RegisterFieldCell.m */; };
+		EAF07D511C4F4C1A0065F36B /* BseCampViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAF07D501C4F4C1A0065F36B /* BseCampViewController.m */; };
+		EAF07D541C4F4C3B0065F36B /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAF07D531C4F4C3B0065F36B /* ChatViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +30,13 @@
 		EAF07D3F1C4F3D110065F36B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EAF07D421C4F3D110065F36B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EAF07D441C4F3D110065F36B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EAF07D4A1C4F44790065F36B /* RegisterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterCell.xib; sourceTree = "<group>"; };
+		EAF07D4C1C4F45340065F36B /* RegisterFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterFieldCell.h; sourceTree = "<group>"; };
+		EAF07D4D1C4F45340065F36B /* RegisterFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterFieldCell.m; sourceTree = "<group>"; };
+		EAF07D4F1C4F4C1A0065F36B /* BseCampViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BseCampViewController.h; sourceTree = "<group>"; };
+		EAF07D501C4F4C1A0065F36B /* BseCampViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BseCampViewController.m; sourceTree = "<group>"; };
+		EAF07D521C4F4C3B0065F36B /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
+		EAF07D531C4F4C3B0065F36B /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,9 +71,16 @@
 			children = (
 				EAF07D361C4F3D110065F36B /* AppDelegate.h */,
 				EAF07D371C4F3D110065F36B /* AppDelegate.m */,
+				EAF07D4F1C4F4C1A0065F36B /* BseCampViewController.h */,
+				EAF07D501C4F4C1A0065F36B /* BseCampViewController.m */,
+				EAF07D521C4F4C3B0065F36B /* ChatViewController.h */,
+				EAF07D531C4F4C3B0065F36B /* ChatViewController.m */,
 				EAF07D391C4F3D110065F36B /* ViewController.h */,
 				EAF07D3A1C4F3D110065F36B /* ViewController.m */,
+				EAF07D4C1C4F45340065F36B /* RegisterFieldCell.h */,
+				EAF07D4D1C4F45340065F36B /* RegisterFieldCell.m */,
 				EAF07D3C1C4F3D110065F36B /* Main.storyboard */,
+				EAF07D4A1C4F44790065F36B /* RegisterCell.xib */,
 				EAF07D3F1C4F3D110065F36B /* Assets.xcassets */,
 				EAF07D411C4F3D110065F36B /* LaunchScreen.storyboard */,
 				EAF07D441C4F3D110065F36B /* Info.plist */,
@@ -138,6 +156,7 @@
 			files = (
 				EAF07D431C4F3D110065F36B /* LaunchScreen.storyboard in Resources */,
 				EAF07D401C4F3D110065F36B /* Assets.xcassets in Resources */,
+				EAF07D4B1C4F44790065F36B /* RegisterCell.xib in Resources */,
 				EAF07D3E1C4F3D110065F36B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -151,7 +170,10 @@
 			files = (
 				EAF07D3B1C4F3D110065F36B /* ViewController.m in Sources */,
 				EAF07D381C4F3D110065F36B /* AppDelegate.m in Sources */,
+				EAF07D541C4F4C3B0065F36B /* ChatViewController.m in Sources */,
 				EAF07D351C4F3D110065F36B /* main.m in Sources */,
+				EAF07D511C4F4C1A0065F36B /* BseCampViewController.m in Sources */,
+				EAF07D4E1C4F45340065F36B /* RegisterFieldCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,6 +320,7 @@
 				EAF07D491C4F3D110065F36B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
