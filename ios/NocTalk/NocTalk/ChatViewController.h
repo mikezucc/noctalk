@@ -13,6 +13,8 @@
 -(void)closeMe:(id)sender;
 -(void)minimizeMe:(id)sender;
 -(void)receivedNotification:(id)sender notification:(NSDictionary *)notification;
+-(void)beganEditing:(id)sender;
+-(void)endedEditing:(id)sender;
 
 @end
 
@@ -20,9 +22,11 @@
 
 @property (weak, nonatomic) id<ChatDelegate> delegate;
 
-@property (strong, nonatomic) UITableView *chatTableView;
+@property (strong, nonatomic) IBOutlet UITableView *chatTableView;
 
-@property (strong, nonatomic) UITextField *chatTextfield;
-@property (strong, nonatomic) UIButton *sendButton;
+@property (strong, nonatomic) IBOutlet UITextView *chatTextView;
+@property (strong, nonatomic) IBOutlet UIButton *sendButton;
+
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *textViewHeightConstraint;
 
 @end

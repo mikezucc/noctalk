@@ -90,6 +90,7 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"doneCell"];
         }
         cell.detailTextLabel.text = @"Done";
+        cell.contentView.backgroundColor = [UIColor colorWithRed:0.5 green:0.7 blue:0.9 alpha:1.0];
         return cell;
     }
     else
