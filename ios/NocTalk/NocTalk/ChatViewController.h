@@ -15,6 +15,7 @@
 -(void)receivedNotification:(id)sender notification:(NSDictionary *)notification;
 -(void)beganEditing:(id)sender;
 -(void)endedEditing:(id)sender;
+-(void)tappedTitleView:(id)sender;
 
 @end
 
@@ -35,5 +36,6 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *textViewHeightConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *chatTitleViewHeightConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *chatTitleViewSpacerConstraint;
+@property (strong, nonatomic) IBOutlet UIVisualEffectView *titleVisualView;
 
 @end

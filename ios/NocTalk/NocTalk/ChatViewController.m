@@ -17,6 +17,8 @@
 @property (strong, nonatomic) NSMutableArray *chatHistory;
 @property (strong, nonatomic) NSMutableArray *chatHeights;
 
+@property (strong, nonatomic) UITapGestureRecognizer *titleTapGest;
+
 @end
 
 @implementation ChatViewController
@@ -36,6 +38,12 @@
     
     [self.chatTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"emptyCell"];
     [self.chatTableView registerNib:[UINib nibWithNibName:@"ChatTextCell" bundle:nil] forCellReuseIdentifier:@"chatTextCell"];
+    
+    self.titleTapGest = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedTitle)];
+    [self.titleTapGest setNumberOfTapsRequired:1.0];
+    [self.titleTapGest setNumberOfTouchesRequired:1.0];
+    [self.titleVisualView addGestureRecognizer:self.titleTapGest];
+    
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -132,6 +140,14 @@
     
     [textView.layer setBorderWidth:0];
     [textView.layer setBorderColor:[UIColor clearColor].CGColor];
+}
+
+#pragma mark - responsies
+
+-(void)tappedTitle {
+    NSLog(@"%s",__FUNCTION__);
+    __weak id weakSelf = self;
+    [self.delegate tappedTitleView:weakSelf];
 }
 
 @end

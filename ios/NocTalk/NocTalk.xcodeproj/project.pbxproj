@@ -11,6 +11,9 @@
 		EA8C082C1C5313C500551F7B /* ChatTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8C082B1C5313C500551F7B /* ChatTextCell.m */; };
 		EA8C08301C53141C00551F7B /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8C082F1C53141C00551F7B /* User.m */; };
 		EA8C08331C5315B400551F7B /* ChatMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8C08321C5315B400551F7B /* ChatMessage.m */; };
+		EAB203251C549A03009417C0 /* WhoisCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAB203241C549A03009417C0 /* WhoisCell.xib */; };
+		EAB203281C549ABB009417C0 /* WhoisCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB203271C549ABB009417C0 /* WhoisCell.m */; };
+		EAB2032B1C549ADD009417C0 /* WhoisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB2032A1C549ADD009417C0 /* WhoisViewController.m */; };
 		EAF07D351C4F3D110065F36B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EAF07D341C4F3D110065F36B /* main.m */; };
 		EAF07D381C4F3D110065F36B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EAF07D371C4F3D110065F36B /* AppDelegate.m */; };
 		EAF07D3B1C4F3D110065F36B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAF07D3A1C4F3D110065F36B /* ViewController.m */; };
@@ -31,6 +34,11 @@
 		EA8C082F1C53141C00551F7B /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		EA8C08311C5315B400551F7B /* ChatMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatMessage.h; sourceTree = "<group>"; };
 		EA8C08321C5315B400551F7B /* ChatMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessage.m; sourceTree = "<group>"; };
+		EAB203241C549A03009417C0 /* WhoisCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WhoisCell.xib; sourceTree = "<group>"; };
+		EAB203261C549ABB009417C0 /* WhoisCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhoisCell.h; sourceTree = "<group>"; };
+		EAB203271C549ABB009417C0 /* WhoisCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WhoisCell.m; sourceTree = "<group>"; };
+		EAB203291C549ADD009417C0 /* WhoisViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhoisViewController.h; sourceTree = "<group>"; };
+		EAB2032A1C549ADD009417C0 /* WhoisViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WhoisViewController.m; sourceTree = "<group>"; };
 		EAF07D301C4F3D110065F36B /* NocTalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NocTalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAF07D341C4F3D110065F36B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EAF07D361C4F3D110065F36B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -64,12 +72,15 @@
 		EA8C082D1C5313C900551F7B /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				EAF07D4A1C4F44790065F36B /* RegisterCell.xib */,
 				EA8C08281C53132B00551F7B /* ChatTextCell.xib */,
-				EAF07D4C1C4F45340065F36B /* RegisterFieldCell.h */,
-				EAF07D4D1C4F45340065F36B /* RegisterFieldCell.m */,
+				EAF07D4A1C4F44790065F36B /* RegisterCell.xib */,
+				EAB203241C549A03009417C0 /* WhoisCell.xib */,
 				EA8C082A1C5313C500551F7B /* ChatTextCell.h */,
 				EA8C082B1C5313C500551F7B /* ChatTextCell.m */,
+				EAF07D4C1C4F45340065F36B /* RegisterFieldCell.h */,
+				EAF07D4D1C4F45340065F36B /* RegisterFieldCell.m */,
+				EAB203261C549ABB009417C0 /* WhoisCell.h */,
+				EAB203271C549ABB009417C0 /* WhoisCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -112,6 +123,8 @@
 				EAF07D531C4F4C3B0065F36B /* ChatViewController.m */,
 				EAF07D391C4F3D110065F36B /* ViewController.h */,
 				EAF07D3A1C4F3D110065F36B /* ViewController.m */,
+				EAB203291C549ADD009417C0 /* WhoisViewController.h */,
+				EAB2032A1C549ADD009417C0 /* WhoisViewController.m */,
 				EA8C08341C53162700551F7B /* Gods */,
 				EA8C082D1C5313C900551F7B /* Cells */,
 				EAF07D3C1C4F3D110065F36B /* Main.storyboard */,
@@ -188,6 +201,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAB203251C549A03009417C0 /* WhoisCell.xib in Resources */,
 				EAF07D431C4F3D110065F36B /* LaunchScreen.storyboard in Resources */,
 				EAF07D401C4F3D110065F36B /* Assets.xcassets in Resources */,
 				EAF07D4B1C4F44790065F36B /* RegisterCell.xib in Resources */,
@@ -207,11 +221,13 @@
 				EAF07D3B1C4F3D110065F36B /* ViewController.m in Sources */,
 				EAF07D381C4F3D110065F36B /* AppDelegate.m in Sources */,
 				EA8C08331C5315B400551F7B /* ChatMessage.m in Sources */,
+				EAB203281C549ABB009417C0 /* WhoisCell.m in Sources */,
 				EAF07D541C4F4C3B0065F36B /* ChatViewController.m in Sources */,
 				EAF07D351C4F3D110065F36B /* main.m in Sources */,
 				EA8C082C1C5313C500551F7B /* ChatTextCell.m in Sources */,
 				EAF07D511C4F4C1A0065F36B /* BseCampViewController.m in Sources */,
 				EAF07D4E1C4F45340065F36B /* RegisterFieldCell.m in Sources */,
+				EAB2032B1C549ADD009417C0 /* WhoisViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
