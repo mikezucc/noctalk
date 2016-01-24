@@ -96,6 +96,30 @@
 			name = Gods;
 			sourceTree = "<group>";
 		};
+		EAB2032C1C54A8F9009417C0 /* vucs */ = {
+			isa = PBXGroup;
+			children = (
+				EAF07D4F1C4F4C1A0065F36B /* BseCampViewController.h */,
+				EAF07D501C4F4C1A0065F36B /* BseCampViewController.m */,
+				EAF07D521C4F4C3B0065F36B /* ChatViewController.h */,
+				EAF07D531C4F4C3B0065F36B /* ChatViewController.m */,
+				EAF07D391C4F3D110065F36B /* ViewController.h */,
+				EAF07D3A1C4F3D110065F36B /* ViewController.m */,
+				EAB203291C549ADD009417C0 /* WhoisViewController.h */,
+				EAB2032A1C549ADD009417C0 /* WhoisViewController.m */,
+			);
+			name = vucs;
+			sourceTree = "<group>";
+		};
+		EAB2032D1C54A902009417C0 /* torries */ = {
+			isa = PBXGroup;
+			children = (
+				EAF07D3C1C4F3D110065F36B /* Main.storyboard */,
+				EAF07D411C4F3D110065F36B /* LaunchScreen.storyboard */,
+			);
+			name = torries;
+			sourceTree = "<group>";
+		};
 		EAF07D271C4F3D110065F36B = {
 			isa = PBXGroup;
 			children = (
@@ -117,19 +141,11 @@
 			children = (
 				EAF07D361C4F3D110065F36B /* AppDelegate.h */,
 				EAF07D371C4F3D110065F36B /* AppDelegate.m */,
-				EAF07D4F1C4F4C1A0065F36B /* BseCampViewController.h */,
-				EAF07D501C4F4C1A0065F36B /* BseCampViewController.m */,
-				EAF07D521C4F4C3B0065F36B /* ChatViewController.h */,
-				EAF07D531C4F4C3B0065F36B /* ChatViewController.m */,
-				EAF07D391C4F3D110065F36B /* ViewController.h */,
-				EAF07D3A1C4F3D110065F36B /* ViewController.m */,
-				EAB203291C549ADD009417C0 /* WhoisViewController.h */,
-				EAB2032A1C549ADD009417C0 /* WhoisViewController.m */,
+				EAB2032D1C54A902009417C0 /* torries */,
+				EAB2032C1C54A8F9009417C0 /* vucs */,
 				EA8C08341C53162700551F7B /* Gods */,
 				EA8C082D1C5313C900551F7B /* Cells */,
-				EAF07D3C1C4F3D110065F36B /* Main.storyboard */,
 				EAF07D3F1C4F3D110065F36B /* Assets.xcassets */,
-				EAF07D411C4F3D110065F36B /* LaunchScreen.storyboard */,
 				EAF07D441C4F3D110065F36B /* Info.plist */,
 				EAF07D331C4F3D110065F36B /* Supporting Files */,
 			);
