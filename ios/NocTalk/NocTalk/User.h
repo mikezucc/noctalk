@@ -17,4 +17,6 @@
 // other information and shit here
 @property (strong, nonatomic) NSString *areacode;
 
++(User *)withName:(NSString *)username fullname:(NSString *)fullname profileHash:(NSString *)profileHash areacode:(NSString *)areacode;
+
 @end

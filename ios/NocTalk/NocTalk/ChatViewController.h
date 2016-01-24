@@ -20,13 +20,20 @@
 
 @interface ChatViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
+// public meta
+@property (strong, nonatomic) NSString *targetString;
+
+
+// delis
 @property (weak, nonatomic) id<ChatDelegate> delegate;
 
-@property (strong, nonatomic) IBOutlet UITableView *chatTableView;
 
+// UI
+@property (strong, nonatomic) IBOutlet UITableView *chatTableView;
 @property (strong, nonatomic) IBOutlet UITextView *chatTextView;
 @property (strong, nonatomic) IBOutlet UIButton *sendButton;
-
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *textViewHeightConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *chatTitleViewHeightConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *chatTitleViewSpacerConstraint;
 
 @end

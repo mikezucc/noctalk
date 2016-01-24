@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ChatMessage.h"
 
 @interface ChatTextCell : UITableViewCell
 
 @property (strong, nonatomic) IBOutlet UIImageView *chatImageView;
 @property (strong, nonatomic) IBOutlet UITextView *chatTextView;
 
-
++(CGSize)approximateCellContentSize:(ChatMessage *)chat;
 
 @end

@@ -10,4 +10,22 @@
 
 @implementation User
 
+-(id)init {
+    self = [super init];
+    
+    return self;
+}
+
++(User *)withName:(NSString *)username fullname:(NSString *)fullname profileHash:(NSString *)profileHash areacode:(NSString *)areacode
+{
+    User *aUser = [User new];
+    
+    aUser.username = username;
+    aUser.fullname = fullname;
+    aUser.profileHash = profileHash;
+    aUser.areacode = areacode;
+    
+    return aUser;
+}
+
 @end
