@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA7973A61C557607000CF905 /* estein.jpg in Resources */ = {isa = PBXBuildFile; fileRef = EA7973A51C557607000CF905 /* estein.jpg */; };
 		EA8C08291C53132B00551F7B /* ChatTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA8C08281C53132B00551F7B /* ChatTextCell.xib */; };
 		EA8C082C1C5313C500551F7B /* ChatTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8C082B1C5313C500551F7B /* ChatTextCell.m */; };
 		EA8C08301C53141C00551F7B /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8C082F1C53141C00551F7B /* User.m */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EA7973A51C557607000CF905 /* estein.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = estein.jpg; sourceTree = "<group>"; };
 		EA8C08281C53132B00551F7B /* ChatTextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatTextCell.xib; sourceTree = "<group>"; };
 		EA8C082A1C5313C500551F7B /* ChatTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatTextCell.h; sourceTree = "<group>"; };
 		EA8C082B1C5313C500551F7B /* ChatTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatTextCell.m; sourceTree = "<group>"; };
@@ -69,6 +71,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EA7973A71C557610000CF905 /* imgaes */ = {
+			isa = PBXGroup;
+			children = (
+				EA7973A51C557607000CF905 /* estein.jpg */,
+			);
+			name = imgaes;
+			sourceTree = "<group>";
+		};
 		EA8C082D1C5313C900551F7B /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,6 +156,7 @@
 				EA8C08341C53162700551F7B /* Gods */,
 				EA8C082D1C5313C900551F7B /* Cells */,
 				EAF07D3F1C4F3D110065F36B /* Assets.xcassets */,
+				EA7973A71C557610000CF905 /* imgaes */,
 				EAF07D441C4F3D110065F36B /* Info.plist */,
 				EAF07D331C4F3D110065F36B /* Supporting Files */,
 			);
@@ -219,6 +230,7 @@
 			files = (
 				EAB203251C549A03009417C0 /* WhoisCell.xib in Resources */,
 				EAF07D431C4F3D110065F36B /* LaunchScreen.storyboard in Resources */,
+				EA7973A61C557607000CF905 /* estein.jpg in Resources */,
 				EAF07D401C4F3D110065F36B /* Assets.xcassets in Resources */,
 				EAF07D4B1C4F44790065F36B /* RegisterCell.xib in Resources */,
 				EA8C08291C53132B00551F7B /* ChatTextCell.xib in Resources */,
