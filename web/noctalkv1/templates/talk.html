@@ -184,7 +184,7 @@
           });
 
 
-        var socket = io('localhost:3000');
+        var socket = io('54.67.61.187:3000');
         socket.on('initializeConnect', function (data) {
             console.log(data['welcome'] + ', ' + data['numUsers']);
             socket.emit('handshakeauth', { nochandle: username, fullname: username });
