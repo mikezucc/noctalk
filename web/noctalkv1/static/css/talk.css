@@ -4,6 +4,12 @@ body {
     font-family: "Arial", Arial, Sans-serif;
     color: #808080;
     display: inline;
+    background-color:#444444;
+}
+
+div {
+    /*border-color:#444444;*/
+    border: none;
 }
 
 div.slackbar {
@@ -12,7 +18,7 @@ div.slackbar {
     overflow-y: scroll;
     overflow-x: hidden;
     height: 800px;
-    background-color: #5f4667;
+    background-color: #222222;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -26,8 +32,12 @@ div.slackrow {
     float: left;
     display: block;
     cursor: pointer;
-    text-shadow: 1px 1px 2px #9f39c7;
+    text-shadow: 1px 1px 2px #777777;
     border-radius: 0px 5px 5px 0px;
+}
+
+.chatpar {
+    background-color: :#444444;
 }
 
 .slackhover {
@@ -68,19 +78,67 @@ div.slackrow {
 }
 
 #messageFrame {
-    width: auto;
+    max-width: 60%;
     min-width:70%;
     height: 800px;
     overflow-y: hidden;
     overflow-x: hidden;
     border: 1px solid #b6b6b6;
     display: inline-block;
+    background-color:#444444;
+}
+
+#m {
+    font-size: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 20px;
+    border:none;
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    color:white;
+    background-color: #637FFF;
+    float:left;
+    /*position:static;*/
+}
+
+.typingListDiv {
+    margin-top:20px;
+}
+
+.messageSender {
+    float:left;
+    font-size: 17px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top:20px;
+    margin-left:10px;
+    border-radius: 30px;
+    border:none;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    color:white;
+    background-color: #70D5FF;
+    height:80px;
+}
+
+.chatHeader {
+    color:#57bdfe;
+    border-style: none;
+    border-bottom: thick dotted #eeeeee;
+    text-shadow:1px 1px 2px #eeeeee;
 }
 
 div.dojoTitle {
     padding-left: 10px;
     padding-top: 3px;
     padding-bottom: 3px;
+    font-size:20px;
 }
 
 div.dropDown {
@@ -91,7 +149,7 @@ div.dropDown {
     text-align: center;
     color: White;
     cursor: pointer;
-    background-color: #44314f;
+    /*background-color: #999999;*/
 }
 
 ::-webkit-scrollbar {
@@ -175,7 +233,55 @@ li.active a, li.active a:hover {
 
 /*----- Content of Tabs -----*/
 .tab-content {
-    height: 80%;
+    height: 550px;
+}
+
+.meme {
+    max-width: 60%;
+    height:auto;
+    border-radius: 30px;
+}
+
+.memeinput {
+    font-size: 17px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    width: 0;
+    height: 0;
+    left: -20px;
+    right: auto;
+    top: 0px;
+    bottom: auto;
+    color:white;
+    line-height: 200%;
+    background-color: #aaaaaa;
+    cursor: pointer;
+}
+
+.webminput  {
+    font-size: 17px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    width: 0;
+    height: 0;
+    left: -20px;
+    right: auto;
+    top: 0px;
+    bottom: auto;
+    color:white;
+    line-height: 200%;
+    background-color: #aaaaaa;
+    cursor: pointer;
 }
 
 .chatwin {
@@ -185,10 +291,10 @@ li.active a, li.active a:hover {
   padding-bottom: 10px;
   border-radius: 3px;
   box-shadow: -1px 1px 1px rgba(0,0,0,0.15);
-  background-color: #fff;
+  /*background-color: #333333;*/
   overflow-y: scroll;
   overflow-x: hidden;
-  height: 80%;
+  height: 100%;
 }
 
 .tab {
@@ -210,16 +316,41 @@ a.particulars {
 }
 
 a.chatFullname {
-    font-size: 12px;
+    font-size: 18px;
     color: #7396cc;
-    text-shadow: 1px 1px 2px #b6b6b6;
+    /*text-shadow: 1px 1px 2px #b6b6b6;*/
     cursor:pointer;
 }
 
 a.chatPayload {
-    font-size: 13px;
-    padding-left: 5px;
-    padding-right: 30px;
+    font-size: 17px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    width: 0;
+    height: 0;
+    left: -20px;
+    right: auto;
+    top: 0px;
+    bottom: auto;
+    color:white;
+    line-height: 200%;
+}
+
+.notMe {
+    background-color: #70D5FF;
+}
+
+.isMe {
+    background-color: #637FFF;
+}
+
+.chatRent {
+    padding-top: 20px;
 }
 
 a.dateStamp {

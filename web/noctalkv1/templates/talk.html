@@ -31,7 +31,18 @@
 
         </div>
         <div class="inputArea">
-            <textarea id="m" cols="50" rows="3"></textarea><button class="messageSender">Send That Shit</button>
+            <textarea id="m" cols="60" rows="3"></textarea><!--<button class="messageSender">Send That Shit</button>-->
+        </div>
+        <div class="cheatSheet" style="display:block;">
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <hr>
+          <a class="memeinput">I have a dank meme</a><a>          </a>
+          <a class="webminput">I have a dank html5 video</a>
         </div>
     </div>
     </div>
@@ -73,7 +84,7 @@
               else
               {
                  $(".chatwin").hide();
-                  var $chatwin = $('<div class="chatwin" noch="' + noch +'" id="' + noch + 'chatwin" style=""><h1 id="' + noch+ 'h1">' + noch +'</h1></div>');
+                  var $chatwin = $('<div class="chatwin" noch="' + noch +'" id="' + noch + 'chatwin" style=""><h1 class="chatHeader" id="' + noch+ 'h1">' + noch +'</h1></div>');
                   $('.tab-content').append($chatwin);
 
                   $(".typinginnerthang").hide();
@@ -82,10 +93,17 @@
               }
 
           });
+        $('.memeinput').click(function () {
+          $('#m').val($('#m').val() + '<img src="" class="meme" />');
+        });
+        $('.webminput').click(function () {
+          $('#m').val($('#m').val() + '<video width="320" height="240" controls> <source src=""></video>');
+        });
         $('#m').keydown(function (event) {
               if (event.keyCode == 13) {
                   // $('.messageSender').trigger('click');
-                  var $chatElement = $('<div noc="' + username + '"><a class="chatFullname">' + username + ':</a> <a class="chatPayload">' + $('#m').val() + '</a><br /></div>');
+                  var $chatElement = $('<div noc="' + username + '" class="chatRent"><a class="chatFullname">' + username + ':</a> <a class="chatPayload isMe">' + $('#m').val() + '</a><br /></div>');
+                  // var $chatElement = $('<div noc="' + username + '" class="chatRent"><a class="chatFullname">' + username + '</a> <a class="chatPayload '+ (chatData['fullname'] === username ? 'isMe' : 'notMe' ) +'">' + $('#m').val() + '</a><br /></div>');
                   if (selectedchat !== "everybody")
                   {
                     $('#' + selectedchat + 'chatwin').append($chatElement);
@@ -321,7 +339,7 @@
         socket.on('chat incoming', function (chatData) {
             console.log("chat received from " + chatData['fullname'] + ' to: ' + chatData['target']);
             console.log(chatData);
-            var $chatElement = $('<div noc="' + chatData['noc'] + '"><a class="chatFullname">' + chatData['fullname'] + ':</a> <a class="chatPayload">' + chatData['message'] + '</a><br /></div>');
+            var $chatElement = $('<div noc="' + chatData['noc'] + '" class="chatRent"><a class="chatFullname">' + chatData['fullname'] + '</a> <a class="chatPayload '+ (chatData['fullname'] === username ? 'isMe' : 'notMe' ) +'">' + chatData['message'] + '</a><br /></div>');
             // if (chatData['noc']  !== username)
             // {
             //     $('#' + chatData['target'] + 'chatwin').append($chatElement);
@@ -484,6 +502,11 @@
                   $chatbar.trigger('click');
               }
             });
+            if (chatData['target'] !== "everybody") {
+              $('#' + chatData['noc'] + 'chatwin').scrollTop($('#' + chatData['noc'] + 'chatwin')[0].scrollHeight);
+            } else {
+              $('#everybodychatwin').scrollTop($('#everybodychatwin')[0].scrollHeight);
+            }
         });
         var timerid;
         var waitingForClear = 0;
@@ -538,7 +561,7 @@
         }); 
         socket.on('noc typing eventbrc', function (data) {
           console.log( data['noc'] + ' >> ' + data['chat'] + '  >>  ' + data['message'] );
-           var $chatElement = $('<div noc="' + data['noc'] + '" id="' + data['noc'] + 'type"><a id="' + data['noc'] + selectedchat + 'type" class="chatFullname">' + data['noc'] + ':</a> <a class="chatPayload">' + data['message'] + '</a><br /></div>');
+           var $chatElement = $('<div noc="' + data['noc'] + '" id="' + data['noc'] + 'type" style="display:inline-block;"><!--<a id="' + data['noc'] + selectedchat + 'type" class="chatFullname">' + data['noc'] + ':</a>--> <a class="chatPayload '+ (data['noc'] === username ? 'isMe' : 'notMe' ) +'">' + data['message'] + '</a><!--<br />--></div>');
            if (data['chat'] === "everybody")
            {
               if ($('#everybodytypediv').find( '#' + data['noc'] + 'type' ).length)

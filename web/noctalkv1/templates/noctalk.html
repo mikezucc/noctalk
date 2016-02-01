@@ -18,20 +18,20 @@
       </div>
       <div class="input">
         <p>Wave 1: Anonymous name and area code</p>
-        <input type="text" class="button" id="nochandle" placeholder="meme_lorde" value="meme_lorde">
-        <input type="text" class="button" id="areacode" placeholder="408" value="408">
-        <p>Wave 2: Doctor's Details</p>
-        <input type="text" class="button" id="tidbit" placeholder="I like to think in my room alone while listening to alternative rock because my stupid parents." value="I like to think in my room alone while listening to alternative rock because my stupid parents.">
-        <input type="text" class="button" id="gender" placeholder="Male" value="Male">
-        <input type="text" class="button" id="age" placeholder="21" value="21">
-        <input type="text" class="button" id="college" placeholder="Uni of College USA" value="Uni of College USA">
+        <input type="text" class="button" id="nochandle" placeholder="username" value="">
+        <input type="text" class="button" id="areacode" placeholder="areacode" value="">
+        <p>Wave 2: ASL</p>
+        <input type="text" class="button" id="tidbit" placeholder="Angsty Bio" value="">
+        <input type="text" class="button" id="gender" placeholder="Gender" value="">
+        <input type="text" class="button" id="age" placeholder="Age" value="">
+        <input type="text" class="button" id="college" placeholder="University" value="">
         <p>Wave 3: Random trivia</p>
-        <input type="text" class="button" id="prezi" placeholder="Trump" value="Trump">
+        <input type="text" class="button" id="prezi" placeholder="Presidential Favorite" value="">
         <P>Final Wave: Social handles</p>
-        <input type="text" class="button" id="twitter" placeholder="@mikezuccarino" value="@mikezuccarino">
-        <input type="text" class="button" id="fb" placeholder="https://www.facebook.com/zuccarino" value="https://www.facebook.com/zuccarino">
-        <input type="text" class="button" id="instag" placeholder="@hempaw2" value="@hempaw2">
-        <input type="text" class="button" id="snapc" placeholder="bootysnatcher22" value="bootysnatcher22">
+        <input type="text" class="button" id="twitter" placeholder="Twitter" value="">
+        <input type="text" class="button" id="fb" placeholder="Facebook link" value="">
+        <input type="text" class="button" id="instag" placeholder="Instagram" value="">
+        <input type="text" class="button" id="snapc" placeholder="Snapchat" value="">
         
         <input type="submit" class="button" id="submit" value="yes im ready">
       </div>
@@ -42,6 +42,10 @@
   $(document).ready(function () {
 
     $('#submit').click(function () {
+      if ($('#nochandle').val() === "") {
+        alert("At least need a username lad");
+        return;
+      }
         var payload = {'nochandle':$('#nochandle').val(),
                      'areacode':$('#areacode').val(),
                      'tidbit':$('#tidbit').val(),
@@ -61,9 +65,11 @@
               data: payload
             }).done(function( msg ) {
               console.log(msg);
-              if ("msg" == "success")
+              if (msg == "success")
               {
                   window.location.href = "/casa/";
+              } else {
+                alert(msg);
               }
             });
     });
